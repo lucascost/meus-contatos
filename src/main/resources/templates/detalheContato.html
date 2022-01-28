@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">    
+    <style type="text/css">
+        .divider{
+            border-right: 1px solid;
+            border-color: #e7e7e7;
+        }
+        
+        body{
+            background-color: #f7f7f7;
+        }
+
+        .linha{
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- MODAL -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Adicionar Contato</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                    <div class="modal-body">
+                        <form method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Nome</label>
+                                <input type="text" class="form-control" th:attr="value=${contato.nome}"  name="nome">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" >Email</label>
+                                <input type="email" class="form-control" th:attr="value=${contato.email}" name="email">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" >Local</label>
+                                <input type="text" class="form-control" th:attr="value=${contato.local}" name="local">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" >Telefone</label>
+                                <input type="text" class="form-control" th:attr="value=${contato.telefone}" name="telefone">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100">Salvar</button>
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand text-light" href="#">Meus Contatos</a>
+            <!-- <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-light text-primary" type="submit">Search</button>
+            </form> -->
+        </div>
+    </nav>
+
+    <!-- CONTAINER -->
+    <div class="container-fluid d-flex flex-row " >
+
+        <!-- MENU -->
+        <div class="col-2 divider mt-2">
+            <a href="..">
+                <button type="button" style="background-color: white;" class="btn text-primary shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                    <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
+                </svg> Lista de Contatos</button>
+            </a>
+        </div>
+
+        <div class="col-10 lista">
+            <div class="d-flex flex-row m-2 shadow-sm linha" th:each="contato: ${contato}">
+                <!-- ICON -->
+                <div th:attr="style ='width:80px; height:80px;border-radius:50%;background-color:'+${contato.getColor()}">
+                    <div style="width:80px; height:80px; text-align: center; padding-top: 10px;">
+                        <span class="text-light fs-3" th:text="${contato.getChar()}"></span>
+                    </div>
+                </div>
+                
+                <!-- CARD -->
+                <div class="flex-column ms-4 flex-grow-1">
+                    <div class="">
+                        <h5 class="card-title">
+                            <span th:text="${contato.nome}"></span>
+                        </h5>
+                        <h6 class="card-subtitle"><span th:text="${contato.email}"></h6>
+                        <p class="card-text fs-6"><span th:text="${contato.local}"></span></p>
+                        <h6><span th:text="${contato.telefone}"></span></h6>
+                    </div>
+                </div>
+                <!-- BUTTONS -->
+                <div class="d-flex flex-column">
+                    <div class="d-flex flex-row">
+                        <!-- BTN EDIT -->
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color: white;" class=" d-flex flex-row btn text-primary shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2 bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                            </svg>
+                            <div id="passwordHelpBlock" style="font-size: xx-small;">Editar</div>
+                        </button>
+                        <!-- BTN DELETE -->
+                        <a th:href="${(#mvc.url('CC#delete').arg(0, contato.id)).build()}" style=" text-decoration: none">
+                            <button type="button" style="background-color: white;" class=" d-flex flex-row btn text-primary shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ed3737" class="me-2 bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                </svg>
+                                <div id="passwordHelpBlock" style="font-size: xx-small;" class="text-danger">Excluir</div>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                 
+            </div>
+        </div>
+        
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
